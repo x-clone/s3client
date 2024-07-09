@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/webrtcn/s3client/models"
+	"github.com/x-clone/s3client/models"
 )
 
 func TestCreateObject(t *testing.T) {

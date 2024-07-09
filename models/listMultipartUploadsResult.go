@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-//ListMultipartUploadsResult List Multipart UploadsR esult
+// ListMultipartUploadsResult List Multipart UploadsR esult
 type ListMultipartUploadsResult struct {
 	XMLName            xml.Name `xml:"ListMultipartUploadsResult"`
 	Bucket             string
@@ -16,7 +16,7 @@ type ListMultipartUploadsResult struct {
 	Upload             []Upload
 }
 
-//Upload Upload
+// Upload Upload
 type Upload struct {
 	Key          string
 	UploadID     string `xml:"UploadId"`
@@ -26,7 +26,7 @@ type Upload struct {
 	Initiated    time.Time
 }
 
-//Initiator Initiator
+// Initiator Initiator
 type Initiator struct {
 	UserID      string `xml:"ID"`
 	DisplayName string

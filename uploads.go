@@ -11,36 +11,36 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/webrtcn/s3client/models"
+	"github.com/x-clone/s3client/models"
 )
 
-//Uploads Multipart Uploads
+// Uploads Multipart Uploads
 type Uploads struct {
 	bucketName string
 	objectName string
 	client     *Client
 }
 
-//CompletePart CompletePart
+// CompletePart CompletePart
 type CompletePart struct {
 	PartNumber int
 	Etag       string `xml:"ETag"`
 }
 
-//CompleteUpload CompleteUpload
-type CompleteUpload struct { 
+// CompleteUpload CompleteUpload
+type CompleteUpload struct {
 	XMLName xml.Name      `xml:"CompleteMultipartUpload"`
 	Parts   CompleteParts `xml:"Part"`
 }
 
-//CompleteParts CompleteParts
+// CompleteParts CompleteParts
 type CompleteParts []CompletePart
 
 func (p CompleteParts) Len() int           { return len(p) }
 func (p CompleteParts) Less(i, j int) bool { return p[i].PartNumber < p[j].PartNumber }
 func (p CompleteParts) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
-//CreateUploadsOption Create uploadsOption
+// CreateUploadsOption Create uploadsOption
 type CreateUploadsOption struct {
 	ContentMD5  string
 	ContentType string
@@ -48,7 +48,7 @@ type CreateUploadsOption struct {
 	Metadatas   map[string]string
 }
 
-//Initiate uploads first
+// Initiate uploads first
 func (u *Uploads) Initiate(option *CreateUploadsOption) (*models.InitiatedMultipartUploadsResult, error) {
 	headers := http.Header{}
 	if option != nil {
@@ -73,7 +73,7 @@ func (u *Uploads) Initiate(option *CreateUploadsOption) (*models.InitiatedMultip
 		object:  u.objectName,
 		headers: headers,
 		suffixs: []suffix{
-			suffix{
+			{
 				key:  "uploads",
 				flag: true,
 			},
@@ -84,7 +84,7 @@ func (u *Uploads) Initiate(option *CreateUploadsOption) (*models.InitiatedMultip
 	return entity, err
 }
 
-//UploadPart Upload part
+// UploadPart Upload part
 func (u *Uploads) UploadPart(partNumber int, uploadID, contentMd5, contentType string, contentLength int64, body io.ReadCloser) (*CompletePart, error) {
 	if partNumber < 1 {
 		return nil, errors.New("pageNumber be more than 0")
@@ -99,11 +99,11 @@ func (u *Uploads) UploadPart(partNumber int, uploadID, contentMd5, contentType s
 			"Content-Type":   {contentType},
 		},
 		suffixs: []suffix{
-			suffix{
+			{
 				key:   "partNumber",
 				value: strconv.Itoa(partNumber),
 			},
-			suffix{
+			{
 				key:   "uploadId",
 				value: uploadID,
 			},
@@ -123,14 +123,14 @@ func (u *Uploads) UploadPart(partNumber int, uploadID, contentMd5, contentType s
 	return part, err
 }
 
-//ListPart list all parts
+// ListPart list all parts
 func (u *Uploads) ListPart(uploadID string) (*models.ListPartsResult, error) {
 	req := &request{
 		method: get,
 		bucket: u.bucketName,
 		object: u.objectName,
 		suffixs: []suffix{
-			suffix{
+			{
 				key:   "uploadId",
 				value: uploadID,
 				flag:  false,
@@ -142,7 +142,7 @@ func (u *Uploads) ListPart(uploadID string) (*models.ListPartsResult, error) {
 	return value, err
 }
 
-//Complete part upload
+// Complete part upload
 func (u *Uploads) Complete(uploadID string, completeParts CompleteParts) (*models.CompleteMultipartUploadResult, error) {
 	sort.Sort(completeParts)
 	result := &CompleteUpload{
@@ -159,7 +159,7 @@ func (u *Uploads) Complete(uploadID string, completeParts CompleteParts) (*model
 			"Content-Length": {strconv.FormatInt(contentLength, 10)},
 		},
 		suffixs: []suffix{
-			suffix{
+			{
 				key:   "uploadId",
 				value: uploadID,
 				flag:  false,
@@ -172,14 +172,14 @@ func (u *Uploads) Complete(uploadID string, completeParts CompleteParts) (*model
 	return value, err
 }
 
-//RemoveUploads delete uploads with uploadid
+// RemoveUploads delete uploads with uploadid
 func (u *Uploads) RemoveUploads(uploadID string) error {
 	req := &request{
 		method: delete,
 		bucket: u.bucketName,
 		object: u.objectName,
 		suffixs: []suffix{
-			suffix{
+			{
 				key:   "uploadId",
 				value: uploadID,
 				flag:  false,

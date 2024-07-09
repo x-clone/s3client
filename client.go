@@ -9,17 +9,17 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/webrtcn/s3client/models"
+	"github.com/x-clone/s3client/models"
 )
 
-//Client s3 Client
+// Client s3 Client
 type Client struct {
 	endPoint        string
 	accessKey       string
 	secretAccessKey string
 }
 
-//NewClient init s3 client
+// NewClient init s3 client
 func NewClient(endPoint, accessKey, secretAccessKey string) *Client {
 	return &Client{
 		endPoint:        endPoint,
@@ -28,7 +28,7 @@ func NewClient(endPoint, accessKey, secretAccessKey string) *Client {
 	}
 }
 
-//NewBucket new bucket service
+// NewBucket new bucket service
 func (c *Client) NewBucket() *Bucket {
 	return &Bucket{
 		client: c,

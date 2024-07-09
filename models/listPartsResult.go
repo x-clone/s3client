@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-//ListPartsResult list part result
+// ListPartsResult list part result
 type ListPartsResult struct {
 	Bucket               string
 	Key                  string
@@ -18,10 +18,10 @@ type ListPartsResult struct {
 	Parts                Parts `xml:"Part"`
 }
 
-//Parts part list
+// Parts part list
 type Parts []UpladPart
 
-//UpladPart upload part
+// UpladPart upload part
 type UpladPart struct {
 	LastModified time.Time
 	PartNumber   int

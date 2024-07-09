@@ -3,7 +3,7 @@ package s3client
 import (
 	"fmt"
 	"testing"
-	//"github.com/webrtcn/s3client/models"
+	//"github.com/x-clone/s3client/models"
 )
 
 func TestList(t *testing.T) {

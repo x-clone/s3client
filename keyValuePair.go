@@ -1,12 +1,12 @@
 package s3client
 
-//KeyValuePair KeyValuePair
+// KeyValuePair KeyValuePair
 type KeyValuePair struct {
 	Key   string
 	Value string
 }
 
-//KeyValuePairList KeyValuePairList
+// KeyValuePairList KeyValuePairList
 type KeyValuePairList []KeyValuePair
 
 func (l KeyValuePairList) ToArray() []string {

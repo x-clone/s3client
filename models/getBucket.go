@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-//GetBucketResponse get bucket response
+// GetBucketResponse get bucket response
 type GetBucketResponse struct {
 	XMLName     xml.Name `xml:"ListBucketResult"`
 	Name        string
@@ -16,7 +16,7 @@ type GetBucketResponse struct {
 	Contents    []GetBucketResponseContent
 }
 
-//GetBucketResponseContent Get Bucket Response Content
+// GetBucketResponseContent Get Bucket Response Content
 type GetBucketResponseContent struct {
 	Key          string
 	LastModified time.Time

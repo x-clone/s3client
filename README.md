@@ -1,4 +1,4 @@
-# go-ceph-s3-client 
+# go-ceph-s3-client
 
 ## Installation
 
@@ -51,7 +51,7 @@ import (
 	"fmt"
 	"testing"
 	. "github.com/webrtcn/s3client"
-	. "github.com/webrtcn/s3client/models"
+	. "github.com/x-clone/s3client/models"
 )
 
 func main {

@@ -6,16 +6,16 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/webrtcn/s3client/models"
+	"github.com/x-clone/s3client/models"
 )
 
-//Object Object
+// Object Object
 type Object struct {
 	client     *Client
 	bucketName string
 }
 
-//NewUploads Initiated multipart uploads
+// NewUploads Initiated multipart uploads
 func (o *Object) NewUploads(objName string) *Uploads {
 	uploader := &Uploads{
 		client:     o.client,
@@ -25,7 +25,7 @@ func (o *Object) NewUploads(objName string) *Uploads {
 	return uploader
 }
 
-//GetObjectOption download file optioin
+// GetObjectOption download file optioin
 type GetObjectOption struct {
 	Range             *Range //The range of the object to retrieve.
 	IfModifiedSince   string //Gets only if modified since the timestamp.
@@ -34,13 +34,13 @@ type GetObjectOption struct {
 	IfNotMatchTag     string //Gets only if object ETag matches ETag.
 }
 
-//Range The range of the object to retrieve.
+// Range The range of the object to retrieve.
 type Range struct {
 	Begin int64
 	End   int64
 }
 
-//CopyObjectOption Copy Object Option
+// CopyObjectOption Copy Object Option
 type CopyObjectOption struct {
 	Perm                  *models.ACL //A canned ACL.
 	CopyIfModifiedSince   string      //Copies only if modified since the timestamp.
@@ -49,7 +49,7 @@ type CopyObjectOption struct {
 	CopyIfNotMatchTag     string      //Copies only if object ETag doesn’t match.
 }
 
-//Create upload object to bucket
+// Create upload object to bucket
 func (o *Object) Create(name, contentMd5, contentType string, contentLength int64, body io.ReadCloser, perm models.ACL) (err error) {
 	header := http.Header{
 		"x-amz-acl":      {string(perm)},
@@ -68,7 +68,7 @@ func (o *Object) Create(name, contentMd5, contentType string, contentLength int6
 	return
 }
 
-//Get get object from bucket with name
+// Get get object from bucket with name
 func (o *Object) Get(name string, option *GetObjectOption) (*http.Response, error) {
 	header := http.Header{}
 	if option != nil {
@@ -107,7 +107,7 @@ func (o *Object) Get(name string, option *GetObjectOption) (*http.Response, erro
 	return response, err
 }
 
-//Copy object
+// Copy object
 func (o *Object) Copy(sourceBucket, sourceObject, destObject string, option *CopyObjectOption) (*models.CopyObjectResult, error) {
 	req := &request{
 		method: put,
@@ -139,7 +139,7 @@ func (o *Object) Copy(sourceBucket, sourceObject, destObject string, option *Cop
 	return value, err
 }
 
-//Remove object from bucket
+// Remove object from bucket
 func (o *Object) Remove(name string) error {
 	req := &request{
 		method: delete,
@@ -149,7 +149,7 @@ func (o *Object) Remove(name string) error {
 	return o.client.do(req, nil, nil)
 }
 
-//GetHeader get object header information
+// GetHeader get object header information
 func (o *Object) GetHeader(name string, option *GetObjectOption) (*http.Response, error) {
 	header := http.Header{}
 	if option != nil {
@@ -188,14 +188,14 @@ func (o *Object) GetHeader(name string, option *GetObjectOption) (*http.Response
 	return response, err
 }
 
-//GetACL get acl of the object
+// GetACL get acl of the object
 func (o *Object) GetACL(name string) (*models.AccessControlPolicy, error) {
 	req := &request{
 		method: get,
 		bucket: o.bucketName,
 		object: name,
 		suffixs: []suffix{
-			suffix{
+			{
 				key:  "acl",
 				flag: true,
 			},
@@ -206,14 +206,14 @@ func (o *Object) GetACL(name string) (*models.AccessControlPolicy, error) {
 	return policy, err
 }
 
-//SetACL set acl of the object with header
+// SetACL set acl of the object with header
 func (o *Object) SetACL(name string, perm models.ACL) error {
 	req := &request{
 		method: put,
 		bucket: o.bucketName,
 		object: name,
 		suffixs: []suffix{
-			suffix{
+			{
 				key:  "acl",
 				flag: true,
 			},

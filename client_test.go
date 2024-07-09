@@ -5,5 +5,5 @@ import (
 )
 
 func TestNewClient(t *testing.T) {
-	//client := NewClient("", "", "") 
+	//client := NewClient("", "", "")
 }
