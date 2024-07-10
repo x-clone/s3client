@@ -36,13 +36,13 @@ func (b *Bucket) List() (*models.BucketsResult, error) {
 }
 
 // Create bucket with given name
-func (b *Bucket) Create(name string, perm models.ACL) error {
+func (b *Bucket) Create(name string, perm models.ACL, headers http.Header) error {
+	headers.Add("x-amz-acl", string(perm))
+
 	req := &request{
-		method: put,
-		bucket: name,
-		headers: http.Header{
-			"x-amz-acl": {string(perm)},
-		},
+		method:  put,
+		bucket:  name,
+		headers: headers,
 	}
 	err := b.client.do(req, nil, nil)
 	return err
